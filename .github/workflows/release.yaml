@@ -18,6 +18,12 @@ jobs:
         with:
           ref: master
 
+      - name: Prepare
+        shell: bash
+        run: |
+          echo "SERVER_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "version is: ${{ env.SERVER_VERSION }}"
+  
       - name: Commit post release updates changes
         shell: bash
         env:
@@ -31,7 +37,7 @@ jobs:
           git add file.txt
           git commit --verbose -m "docs: ${{ env.SERVER_VERSION }} [skip ci]"
           git checkout -b release-docs-${{ env.SERVER_VERSION }}
-          git push --verbose
+          git push --set-upstream origin --verbose release-docs-${{ env.SERVER_VERSION }}
 
       - name: Create merge request
         env:
