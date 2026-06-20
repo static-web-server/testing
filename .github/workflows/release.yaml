@@ -10,15 +10,15 @@ permissions:
   pull-requests: write
 
 jobs:
-  checksum_file:
+  post-updates:
     runs-on: ubuntu-24.04
     steps:
-      - name: Repository Dispatch
+      - name: Dispatch docs update event
         uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DOCS_TOKEN }}
           repository: static-web-server/docs
-          event-type: event-docs-v2-install
+          event-type: event-docs-v2-update
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
   # checksum_file:
